@@ -1,0 +1,99 @@
+CREATE TABLE ASPRAK
+  (
+    kode_asprak  VARCHAR2 (3) NOT NULL ,
+    nama_asprak  VARCHAR2 (20),
+    no_hp VARCHAR2 (13)
+  ) ;
+ALTER TABLE ASPRAK ADD CONSTRAINT Asprak_PK PRIMARY KEY ( kode_asprak ) ;
+
+CREATE TABLE MATAKULIAH
+  (
+    id_matkul VARCHAR2 (10) NOT NULL ,
+    Kode_asprak VARCHAR2 (3) NOT NULL,
+    nama_matkul VARCHAR2 (20)  
+  ) ;
+ALTER TABLE MATAKULIAH ADD CONSTRAINT Matakuliah_PK PRIMARY KEY ( id_matkul ) ;
+
+
+CREATE TABLE PRAKTIKUM
+  (
+    id_praktikum VARCHAR2 (10) NOT NULL ,
+    id_matkul VARCHAR2 (10) NOT NULL ,
+    nim VARCHAR2 (10) NOT NULL
+  ) ;
+ALTER TABLE Praktikum ADD CONSTRAINT Praktikum_PK PRIMARY KEY ( id_praktikum ) ;
+
+
+CREATE TABLE Mahasiswa
+  (
+    nim VARCHAR2 (10) NOT NULL ,
+    id_kelas   VARCHAR2 (10) NOT NULL,
+    nama_mahasiswa VARCHAR2 (20) NOT NULL,
+    alamat VARCHAR2 (30)
+  ) ;
+ALTER TABLE Mahasiswa ADD CONSTRAINT Mahasiswa_PK PRIMARY KEY ( nim ) ;
+
+CREATE TABLE Kelas
+  (
+    id_kelas   VARCHAR2 (10) NOT NULL ,
+    nama_kelas VARCHAR2 (10), 
+    nama_hari VARCHAR2 (10) NOT NULL
+  ) ;
+ALTER TABLE Kelas ADD CONSTRAINT Kelas_PK PRIMARY KEY ( id_kelas ) ;
+
+ALTER TABLE Kelas add id_hari VARCHAR2(10);
+ALTER TABLE Kelas add nama_kelas VARCHAR2(10); 
+
+CREATE TABLE Hari
+  (
+    id_hari VARCHAR2 (10) NOT NULL,
+    nama_hari VARCHAR2 (10) NOT NULL ,
+    mulai varchar(10) ,
+    selesai varchar(10)
+  ) ;
+ALTER TABLE hari ADD CONSTRAINT hari_pk PRIMARY KEY ( id_hari ) ;
+
+
+
+CREATE TABLE Penilaian
+  (
+    id_penilaian  VARCHAR2 (10) NOT NULL ,
+    id_praktikum VARCHAR2 (10) NOT NULL,
+    id_modul VARCHAR2 (10) NOT NULL,
+    nomor_modul VARCHAR2 (10),
+    Nilai    NUMBER
+  ) ;
+ALTER TABLE penilaian ADD CONSTRAINT penilaian_PK PRIMARY KEY ( id_penilaian ) ;
+
+CREATE TABLE MODUL
+  (
+    id_modul VARCHAR2(10) NOT NULL,
+    nomor_modul VARCHAR2 (10) ,
+    id_matkul VARCHAR2(20) NOT NULL,
+    materi VARCHAR2 (30)
+
+  ) ;
+ALTER TABLE MODUL ADD CONSTRAINT Modul_PK PRIMARY KEY ( id_modul ) ;
+
+ALTER TABLE MODUL  MODIFY materi VARCHAR2 (55);
+
+
+ALTER TABLE praktikum ADD CONSTRAINT praktikum_matakuliah_FK FOREIGN KEY ( id_matkul ) REFERENCES matakuliah ( id_matkul ) ;
+
+ALTER TABLE praktikum ADD CONSTRAINT praktikum_mahasiswa_FK FOREIGN KEY ( NIM ) REFERENCES mahasiswa ( NIM ) ;
+
+ALTER TABLE penilaian ADD CONSTRAINT penilaian_praktikum_FK FOREIGN KEY ( id_praktikum ) REFERENCES praktikum ( id_praktikum ) ;
+
+ALTER TABLE penilaian ADD CONSTRAINT penilaian_modul_FK FOREIGN KEY ( id_modul ) REFERENCES modul ( id_modul ) ;
+
+ALTER TABLE MATAKULIAH ADD CONSTRAINT MATAKULIAH_ASPRAK_FK FOREIGN KEY (Kode_asprak ) REFERENCES ASPRAK ( kode_asprak ) ;
+
+ALTER TABLE MAHASISWA ADD CONSTRAINT MAHASISWA_KELAS_FK FOREIGN KEY ( id_kelas ) REFERENCES kelas ( id_kelas ) ;
+
+ALTER TABLE KELAS ADD CONSTRAINT KELAS_HARI_FK FOREIGN KEY (nama_hari) REFERENCES hari (id_hari);
+
+ALTER TABLE modul ADD CONSTRAINT modul_matakuliah_FK FOREIGN KEY ( id_matkul) REFERENCES matakuliah ( id_matkul ) ;
+
+ALTER TABLE ASPRAK MODIFY no_hp VARCHAR2(20); 
+
+ALTER TABLE MATAKULIAH MODIFY NAMA_MATKUL VARCHAR2(30);
